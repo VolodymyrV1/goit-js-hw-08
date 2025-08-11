@@ -64,25 +64,84 @@ const images = [
   },
 ];
 
-// 3 - Розмітка елементів галереї
-// У тебе є контейнер, в який можна додати елементи галереї, і дані, за якими їх можна створити. Саме час наповнювати галерею розміткою.
-// Використовуй масив об’єктів images і цей HTML шаблон елемента галереї та створи в JavaScript коді розмітку елементів, після чого додай усю розмітку всередину ul.gallery. Не додавай інші HTML теги, крім тих, що містяться в цьому шаблоні.
 
-// <li class="gallery-item">
-//   <a class="gallery-link" href="large-image.jpg">
-//     <img
-//       class="gallery-image"
-//       src="small-image.jpg"
-//       data-source="large-image.jpg"
-//       alt="Image description"
-//     />
-//   </a>
-// </li>;
+function getGalleryElement(selector) {
+  return document.querySelector(selector);
+  
+}
 
-// В атрибуті src тега <img> вказуємо посилання на маленьку версію зображення.
-// Для атрибута alt використовуємо опис зображення.
-// Посилання на велике зображення повинно зберігатися в data-атрибуті source на елементі <img>, і вказуватися в href посилання.
-// Зверни увагу на те, що зображення огорнуте посиланням, у якого атрибут href вказує на шлях до файлу з зображенням. Отже клік по ньому може викликати завантаження зображення на комп’ютер користувача. Заборони цю поведінку за замовчуванням.
+function renderGallery(images, galleryEl) {
+  const markup = images
+  .map(({ preview, original, description }) =>
+      `<li class="gallery-item">
+        <a class="gallery-link" href="${original}">
+          <img
+            class="gallery-image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          />
+        </a>
+      </li>`
+    )
+    .join('');
+  
+  galleryEl.insertAdjacentHTML('beforeend', markup);
+ 
+}
+
+function selectImg(event) {
+  event.preventDefault();
+  if (event.target.nodeName != "IMG") return;
+  console.log(event.target.dataset.source);
+}
+
+function initGallery(images, selector) {
+  const galleryEl = getGalleryElement(selector);
+
+  renderGallery(images, galleryEl);
+
+  galleryEl.addEventListener("click", selectImg);
+}
+ 
+initGallery(images, ".gallery")
+
+// renderGallery(images, ".gallery")
+
+
+// const gallery = document.querySelector('.gallery');
+
+// gallery.addEventListener("click", selectImg);
+
+// function selectImg(event) {
+//   event.preventDefault();
+//   if (event.target.nodeName != "IMG") {
+//     return;
+//   };
+//   console.log(event.target.dataset.source);
+  
+// }
+
+
+// const links = document.querySelectorAll("a.gallery-link");
+
+// links.forEach(link => {
+//   link.addEventListener("click", handleClick);
+// });
+
+
+// function handleClick(event) {
+//   event.preventDefault();
+//   const img = event.currentTarget.querySelector('img');
+//   if (!img) return;
+//   console.log(img.dataset.source);
+// }
+
+
+
+
+
+
 
 // 5 - Делегування
 // Саме час додати функціонал прослуховування кліка по елементах галереї та отримання посилання на велике зображення при кліку. Для цього використовуй прийом делегування на ul.gallery. Поки що при кліку на елемент галереї виводь у консоль посилання на велике зображення, що зберігається як значення атрибуту data-source елемента img.

@@ -95,7 +95,7 @@ function selectImg(event) {
   console.log(dataSet);
   const instance = basicLightbox.create(
     `
-    <img src="${dataSet}" width="1112" height="640" /> 
+    <img src="${dataSet}" style="width:1112px; height:640px;"  /> 
     `,
     {
       closable: true,

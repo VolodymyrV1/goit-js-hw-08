@@ -64,16 +64,15 @@ const images = [
   },
 ];
 
-
 function getGalleryElement(selector) {
   return document.querySelector(selector);
-  
 }
 
 function renderGallery(images, galleryEl) {
   const markup = images
-  .map(({ preview, original, description }) =>
-      `<li class="gallery-item">
+    .map(
+      ({ preview, original, description }) =>
+        `<li class="gallery-item">
         <a class="gallery-link" href="${original}">
           <img
             class="gallery-image"
@@ -85,15 +84,24 @@ function renderGallery(images, galleryEl) {
       </li>`
     )
     .join('');
-  
+
   galleryEl.insertAdjacentHTML('beforeend', markup);
- 
 }
 
 function selectImg(event) {
   event.preventDefault();
-  if (event.target.nodeName != "IMG") return;
-  console.log(event.target.dataset.source);
+  const dataSet = event.target.dataset.source;
+  if (event.target.nodeName != 'IMG') return;
+  console.log(dataSet);
+  const instance = basicLightbox.create(
+    `
+    <img src="${dataSet}" width="1112" height="640" /> 
+    `,
+    {
+      closable: true,
+    }
+  );
+  instance.show();
 }
 
 function initGallery(images, selector) {
@@ -101,47 +109,7 @@ function initGallery(images, selector) {
 
   renderGallery(images, galleryEl);
 
-  galleryEl.addEventListener("click", selectImg);
+  galleryEl.addEventListener('click', selectImg);
 }
- 
-initGallery(images, ".gallery")
 
-// renderGallery(images, ".gallery")
-
-
-// const gallery = document.querySelector('.gallery');
-
-// gallery.addEventListener("click", selectImg);
-
-// function selectImg(event) {
-//   event.preventDefault();
-//   if (event.target.nodeName != "IMG") {
-//     return;
-//   };
-//   console.log(event.target.dataset.source);
-  
-// }
-
-
-// const links = document.querySelectorAll("a.gallery-link");
-
-// links.forEach(link => {
-//   link.addEventListener("click", handleClick);
-// });
-
-
-// function handleClick(event) {
-//   event.preventDefault();
-//   const img = event.currentTarget.querySelector('img');
-//   if (!img) return;
-//   console.log(img.dataset.source);
-// }
-
-
-
-
-
-
-
-// 5 - Делегування
-// Саме час додати функціонал прослуховування кліка по елементах галереї та отримання посилання на велике зображення при кліку. Для цього використовуй прийом делегування на ul.gallery. Поки що при кліку на елемент галереї виводь у консоль посилання на велике зображення, що зберігається як значення атрибуту data-source елемента img.
+initGallery(images, 'ul.gallery');
